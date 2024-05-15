@@ -1,0 +1,23 @@
+<?php
+$content = file_get_contents('php://input');
+$json = json_decode($content);
+$user_name = addslashes($json->$usuario);
+//conectar pdo
+$host = "localhost";
+$banco = "teste";
+$usuario = "root";
+$senha = '';
+$con = new PDO("mysql:host=[$host}; dbname={$banco}",
+$usuario, $senha);
+$stmt = $con->prepare("select * from usuario where nome = :usuario");
+$stmt->execute(array('usuario' => $json->$usuario));
+$row = $stmt->fetch();
+if($row) {
+    echo "recebi usuario ".$row['id'];
+} else {
+    echo "usuario invalido";
+}
+
+
+
+//echo "recebi usuario " .$json->usuario;
